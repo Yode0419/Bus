@@ -5,7 +5,7 @@ const stopNameInput = document.getElementById('stopName');
 const resultDiv = document.getElementById('result');
 
 // API URL
-const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbxZHE-sQKqrimMdbUr7SJuMeNP0D8CJjIcA4pegFflxTCqFJ4z0hHpDiWPQzRscv8DRsw/exec';
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbwfJ-wGjTTzdhtbfBnNhrzdi2vcdmkFKvqvuVYAlAmc__3bhDibxezFMrqBWex8OBQL2Q/exec';
 
 // 顯示結果的函數
 function showResult(message, isError = false) {
