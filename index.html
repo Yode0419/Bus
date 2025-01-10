@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公車到站查詢</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      margin-top: 16px;
+      padding: 12px;
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 4px;
+      display: none;
+    }
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>公車到站查詢</h1>
+    <input type="text" id="routeName" placeholder="請輸入公車路線（例如：204）">
+    <input type="text" id="stopName" placeholder="請輸入站牌名稱（例如：植物園）">
+    <button onclick="fetchBusData()">查詢</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function fetchBusData() {
+      const routeName = document.getElementById('routeName').value.trim();
+      const stopName = document.getElementById('stopName').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      if (!routeName || !stopName) {
+        resultDiv.style.display = 'block';
+        resultDiv.textContent = '請輸入完整的路線和站牌資訊！';
+        resultDiv.className = 'error';
+        return;
+      }
+
+      // API URL
+      const apiUrl = `https://script.google.com/macros/s/AKfycbxZHE-sQKqrimMdbUr7SJuMeNP0D8CJjIcA4pegFflxTCqFJ4z0hHpDiWPQzRscv8DRsw/exec?routeName=${encodeURIComponent(routeName)}&stopName=${encodeURIComponent(stopName)}`;
+
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = '查詢中...';
+      resultDiv.className = '';
+
+      // Fetch data from the API
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            resultDiv.textContent = data.error;
+            resultDiv.className = 'error';
+          } else {
+            const results = data.results || [];
+            if (results.length > 0) {
+              resultDiv.innerHTML = results.map(result => `
+                <div>方向：${result.direction}，到站時間：${result.timeText}</div>
+              `).join('');
+              resultDiv.className = '';
+            } else {
+              resultDiv.textContent = '查無到站資訊！';
+              resultDiv.className = 'error';
+            }
+          }
+        })
+        .catch(error => {
+          console.error('API 請求失敗:', error);
+          resultDiv.textContent = '發生錯誤，請稍後再試！';
+          resultDiv.className = 'error';
+        });
+    }
+  </script>
+</body>
+</html>
