@@ -54,7 +54,7 @@ async function handleSubmit(event) {
     
     const results = data.results || [];
     if (results.length > 0) {
-      resultDiv.innerHTML = formatBusInfo(results);
+      resultDiv.innerHTML = formatBusInfo(routeName, results);
       resultDiv.className = 'result active success';
     } else {
       showResult('查無到站資訊！', true);
