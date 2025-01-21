@@ -14,13 +14,15 @@ function showResult(message, isError = false) {
 }
 
 // 格式化巴士資訊
-function formatBusInfo(results) {
-  return results.map(result => `
+function formatBusInfo(routeName, results) {
+  const header = `<h2>路線：${routeName}</h2>`;
+  const busInfo = results.map(result => `
     <div class="bus-info">
       <div>方向：${result.direction}</div>
       <div>到站時間：${result.timeText}</div>
     </div>
   `).join('');
+  return header + busInfo;
 }
 
 // 處理表單提交
