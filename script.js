@@ -65,3 +65,5 @@ async function handleSubmit(event) {
     showResult('發生錯誤，請稍後再試！', true);
   }
 }
+// 綁定表單提交事件
+form.addEventListener('submit', handleSubmit);
